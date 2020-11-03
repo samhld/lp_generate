@@ -11,14 +11,16 @@ def gen_line(measurement,
                 float_fields,
                 str_fields,
                 tag_key_size,
+                tag_value_size,
                 field_key_size,
                 int_value_size,
                 float_value_size,
                 str_value_size,
                 precision):
 
-    tagset = sets.gen_tagset()
-    fieldset = sets.gen_fieldset()
+
+    tagset = sets.gen_tagset(num_tags, tag_key_size, tag_value_size)
+    fieldset = sets.gen_fieldset(int_fields, float_fields, str_fields, field_key_size,int_value_size,float_value_size,str_value_size)
     timestamp = primitives.gen_ts(precision)
     line = f"{measurement},{tagset}{fieldset}{timestamp}"
 
@@ -31,6 +33,7 @@ def gen_batch(measurement,
                 float_fields=1,
                 str_fields=1,
                 tag_key_size=8,
+                tag_value_size=8,
                 field_key_size=8,
                 int_value_size=4,
                 float_value_size=4,
@@ -45,6 +48,7 @@ def gen_batch(measurement,
                             float_fields,
                             str_fields,
                             tag_key_size,
+                            tag_value_size,
                             field_key_size,
                             int_value_size,
                             float_value_size,
@@ -57,16 +61,17 @@ def gen_batch(measurement,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a batch of Line Protocol points of a specified shape")
     parser.add_argument('measurement', default='cpu', type=str)
-    parser.add_argument('--batch_size', default=100, type=int)
-    parser.add_argument('--num_tags', type=int)
-    parser.add_argument('--int_fields', type=int)
-    parser.add_argument('--float_fields', type=int)
-    parser.add_argument('--str_fields', type=int)
-    parser.add_argument('--tag_key_size', type=int)
-    parser.add_argument('--field_key_size', type=int)
-    parser.add_argument('--int_value_size', type=int)
-    parser.add_argument('--float_value_size', type=int)
-    parser.add_argument('--str_value_size', type=int)
+    parser.add_argument('--batch_size', type=int, default=100)
+    parser.add_argument('--num_tags', type=int, default=3)
+    parser.add_argument('--int_fields', type=int, default=2)
+    parser.add_argument('--float_fields', type=int, default=1)
+    parser.add_argument('--str_fields', type=int, default=1)
+    parser.add_argument('--tag_key_size', type=int, default=8)
+    parser.add_argument('--tag_value_size', type=int, default=10)  
+    parser.add_argument('--field_key_size', type=int, default=8)
+    parser.add_argument('--int_value_size', type=int, default=4)
+    parser.add_argument('--float_value_size', type=int, default=4)
+    parser.add_argument('--str_value_size', type=int, default=8)
     parser.add_argument('--precision', type=str, choices = ['s','S','ms','MS','us','US','ns','NS'], default='s')
 
     args = parser.parse_args()
@@ -77,12 +82,14 @@ if __name__ == "__main__":
     float_fields = args.float_fields
     str_fields = args.str_fields
     tag_key_size = args.tag_key_size
+    tag_value_size = args.tag_value_size
     field_key_size = args.field_key_size
     int_value_size = args.int_value_size
     float_value_size = args.float_value_size
     str_value_size = args.str_value_size
     precision = args.precision
 
+    # print(args)
     print(gen_batch(measurement, 
                 batch_size,
                 num_tags,
@@ -90,6 +97,7 @@ if __name__ == "__main__":
                 float_fields,
                 str_fields,
                 tag_key_size,
+                tag_value_size,
                 field_key_size,
                 int_value_size,
                 float_value_size,

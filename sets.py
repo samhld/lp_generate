@@ -4,8 +4,8 @@ import time
 import primitives
 
 # Return set of Tag key-value pairs with trailing space
-def gen_tagset(num_tags=4, tag_key_size=8, tag_value_size=8):
-    tagset = ''.join(primitives.gen_tag(6,6) for i in range(num_tags)) + ' '
+def gen_tagset(num_tags, tag_key_size, tag_value_size):
+    tagset = ''.join(primitives.gen_tag(tag_key_size,tag_value_size) for i in range(num_tags)) + ' '
     return(tagset[1:]) # remove leading comma
 
 

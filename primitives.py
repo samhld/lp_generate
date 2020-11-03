@@ -15,7 +15,7 @@ def _gen_int(num):
 
 def gen_tag(tag_key_size, tag_value_size):
     # return string Tag key-value pair
-    key = 'tag_' + _gen_string(tag_key_size-4)
+    key = 'tag_' + _gen_string((tag_key_size-4))
     val = _gen_string(tag_value_size)
     pair = f",{key}={val}"
     return(pair)
