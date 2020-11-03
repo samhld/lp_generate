@@ -60,7 +60,7 @@ def gen_batch(measurement,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a batch of Line Protocol points of a specified shape")
-    parser.add_argument('measurement', default='cpu', type=str)
+    parser.add_argument('measurement', type=str, default='cpu')
     parser.add_argument('--batch_size', type=int, default=100)
     parser.add_argument('--num_tags', type=int, default=3)
     parser.add_argument('--int_fields', type=int, default=2)
