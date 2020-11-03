@@ -11,6 +11,7 @@ This command line application is designed to help generate a use case specific w
 * Python 3.6+
 
 ### Usage:
+(Currently this only prints to `stdout`.  I will be adding the ability to write to an InfluxDB endpoint shortly)
 - **Command line**
   - `cd` into the `lp_generate` directory.
   - Run `<your Python 3.6+ interpreter> main.py <args>`
@@ -29,4 +30,5 @@ This command line application is designed to help generate a use case specific w
     - `--float_value_size`: Length of `float` Field values on each Line
     - `--str_value_size`:   Length of `string` Field values on each Line
     - `--precision`:        Timestamp precision: can be in `seconds`, `milliseconds`, `microseconds`, or `nanoseconds`
-- **Other form of running this?**
+- **To do**
+  - Configure for writing to InfluxDB
