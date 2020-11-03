@@ -3,7 +3,7 @@
 ##  Generates metrics in a format and method determined by the user.
 InfluxCloud 2.0 has 2 cost vectors related to write volume: "Data In" and "Storage".  Predicting and/or generating the cost of payloads from the "Data In" perspective is trivial arithmetic.  However, storage is drastically affected by the "shape" of the data, itself.
 
-InfluxDB deals with Tags and Fields differently.  It also deals with different Field types differently.  The compression alogrithms and, therefore, efficacy is different whether you write integers, floats, strings, booleans, etc.  Time stamp regularity and precision also affects compression.  
+InfluxDB deals with [Tags](https://docs.influxdata.com/influxdb/v2.0/reference/key-concepts/data-elements/#tags) and [Fields](https://docs.influxdata.com/influxdb/v2.0/reference/key-concepts/data-elements/#fields) differently.  It also deals with different Field types differently.  The compression alogrithms and, therefore, efficacy is different whether you write integers, floats, strings, booleans, etc.  Time stamp regularity and precision also affects compression.  
 
 This command line application is designed to help generate a use case specific write workload that results in empirical evidence for what the write and storage costs will be to a user.
 
@@ -11,7 +11,7 @@ This command line application is designed to help generate a use case specific w
 * Python 3.6+
 
 ### Usage:
-(Currently this only prints to `stdout`.  I will be adding the ability to write to an InfluxDB endpoint shortly)
+Disclaimer (11/3/20): Currently this only prints to `stdout`.  I will be adding the ability to write to an InfluxDB endpoint shortly.  For now you can intercept the `stdout` data with [Telegraf](https://docs.influxdata.com/telegraf/v1.16/)'s [`exec`](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/exec) input plugin)
 - **Command line**
   - `cd` into the `lp_generate` directory.
   - Run `<your Python 3.6+ interpreter> main.py <args>`
