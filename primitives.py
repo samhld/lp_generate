@@ -13,32 +13,32 @@ def _gen_int(num):
     upper_bound = 10 ** num - 1
     return(random.randint(lower_bound,upper_bound))
 
-def tag(tag_key_size, tag_value_size):
+def gen_tag(tag_key_size, tag_value_size):
     # return string Tag key-value pair
     key = 'tag_' + _gen_string(tag_key_size-4)
     val = _gen_string(tag_value_size)
-    pair = f"{key}={val}"
+    pair = f",{key}={val}"
     return(pair)
 
-def str_field(field_key_size, field_value_size):
+def gen_str_field(field_key_size, field_value_size):
     # return string Tag key-value pair
     key = 'str_' + _gen_string(field_key_size-4)
     val = _gen_string(field_value_size)
-    pair = f"{key}='{val}'"
+    pair = f",{key}='{val}'"
     return(pair)
 
-def int_field(field_key_size, int_value_size):
+def gen_int_field(field_key_size, int_value_size):
     # return int Field key-value pair
     key = 'int_' + _gen_string(field_key_size-4)
     val = _gen_int(int_value_size)
-    pair = f"{key}={val}"
+    pair = f",{key}={val}"
     return(pair)
 
-def float_field(field_key_size, float_value_size):
+def gen_float_field(field_key_size, float_value_size):
     # return float Field key-value pair
     key = 'fl_' + _gen_string(field_key_size-3)
     val = round(random.uniform(10,99), float_value_size-2)
-    pair = f"{key}={val}"
+    pair = f",{key}={val}"
     return(pair)
 
 def gen_ts(precision = 's'):
