@@ -12,7 +12,7 @@ def gen_tagset(num_tags, tag_key_size, tag_value_size):
 # Following 3 functions are helper functions for `gen_fieldset()`
 def _gen_int_fieldset(int_fields, field_key_size, int_value_size):
     int_fieldset = ''.join(primitives.gen_int_field(field_key_size,int_value_size) for i in range(int_fields))
-    return(int_fieldset)
+    return(int_fieldset[1:])
 
 def _gen_float_fieldset(float_fields, field_key_size, float_value_size):
     float_fieldset = ''.join(primitives.gen_float_field(field_key_size,float_value_size) for i in range(float_fields))
@@ -34,5 +34,12 @@ def gen_fieldset(int_fields=2,
     float_fieldset = _gen_float_fieldset(float_fields, field_key_size, float_value_size)
     str_fieldset = _gen_str_fieldset(str_fields, field_key_size, str_value_size)
 
-    fieldset = f"{int_fieldset},{float_fieldset},{str_fieldset} "
-    return(fieldset[1:]) # remove leading comma
+    fieldset = ''
+    if int_fieldset:
+        fieldset += f"{int_fieldset},"
+    if float_fieldset:
+        fieldset += f"{float_fieldset},"
+    if str_fieldset:
+        fieldset += f"{str_fieldset},"
+
+    return(fieldset[:-1]+' ') # remove leading and trailing comma

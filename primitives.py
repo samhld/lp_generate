@@ -25,6 +25,7 @@ def gen_str_field(field_key_size, field_value_size):
     key = 'str_' + _gen_string(field_key_size-4)
     val = _gen_string(field_value_size)
     pair = f",{key}='{val}'"
+    print(f"string pair: {pair}")
     return(pair)
 
 def gen_int_field(field_key_size, int_value_size):
@@ -32,6 +33,7 @@ def gen_int_field(field_key_size, int_value_size):
     key = 'int_' + _gen_string(field_key_size-4)
     val = _gen_int(int_value_size)
     pair = f",{key}={val}"
+    print(f"int pair: {pair}")
     return(pair)
 
 def gen_float_field(field_key_size, float_value_size):

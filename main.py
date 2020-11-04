@@ -3,8 +3,6 @@ import sets
 import time
 import argparse
 
-
-
 def gen_line(measurement,
                 num_tags,
                 int_fields,
