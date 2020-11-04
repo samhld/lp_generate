@@ -1,6 +1,6 @@
 import random
 import string
-import time
+import datetime
 
 letters = string.ascii_lowercase
 
@@ -42,15 +42,20 @@ def gen_float_field(field_key_size, float_value_size):
     return(pair)
 
 def gen_ts(precision = 's'):
-    ts  = str(time.time_ns())
+    now  = datetime.datetime.now()
+    ts = now.timestamp()
     if precision == ('s' or 'S'):
-        return ts[:-9]
+        ts = round(ts)
+        return(ts*1000000000)
     elif precision == ('ms' or 'MS'):
-        return ts[:-6]
+        ts = round(ts*1000)
+        return(ts*1000000)
     elif precision == ('us' or 'US'):
-        return ts[:-3]
+        ts = round(ts*1000000)
+        return(ts*1000)
     elif precision == ('ns' or 'NS'):
-        return ts
+        ts = round(ts*1000000000)
+        return(ts)
     else:
         print("Warn: gen_ts() only takes `s`, `ms`, `us`, or `ns` as inputs")
         return ts
