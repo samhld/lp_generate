@@ -31,4 +31,5 @@ Disclaimer (11/3/20): Currently this only prints to `stdout`.  I will be adding 
     - `--str_value_size`:   Length of `string` Field values on each Line
     - `--precision`:        Timestamp precision: can be in `seconds`, `milliseconds`, `microseconds`, or `nanoseconds`
 - **To do**
+  - Each batch's Tag/Field keys should not change per line.  Current plan to is instantiate keys and pass them as instances to each line instead of generating new ones for each line
   - Configure for writing to InfluxDB
