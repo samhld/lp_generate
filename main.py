@@ -27,18 +27,18 @@ def gen_line(measurement,
     return(line)
 
 def gen_batch(measurement, 
-                batch_size=10,
-                num_tags=3,
-                int_fields=2,
-                float_fields=1,
-                str_fields=1,
-                tag_key_size=8,
-                tag_value_size=8,
-                field_key_size=8,
-                int_value_size=4,
-                float_value_size=4,
-                str_value_size=8,
-                precision='s'):
+                batch_size,
+                num_tags,
+                int_fields,
+                float_fields,
+                str_fields,
+                tag_key_size,
+                tag_value_size,
+                field_key_size,
+                int_value_size,
+                float_value_size,
+                str_value_size,
+                precision):
 
     batch = []
     for i in range(batch_size):
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     precision = args.precision
 
     # print(args)
-    print(gen_batch(measurement, 
+    batch = gen_batch(measurement, 
                 batch_size,
                 num_tags,
                 int_fields,
@@ -102,4 +102,7 @@ if __name__ == "__main__":
                 int_value_size,
                 float_value_size,
                 str_value_size,
-                precision))
+                precision)
+
+    for line in batch:
+        print(line)
