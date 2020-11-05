@@ -93,7 +93,7 @@ if __name__ == "__main__":
     parser.add_argument('--hold_keys', type=bool, default=True)
 
     args = parser.parse_args()
-    print(f"args: {args}")
+
     measurement = args.measurement
     batch_size = args.batch_size
     num_tags = args.num_tags
@@ -108,7 +108,6 @@ if __name__ == "__main__":
     str_value_size = args.str_value_size
     precision = args.precision
     hold_keys = args.hold_keys
-    print(f"hold keys: {hold_keys}")
 
     # print(args)
     batch = gen_batch(measurement, 

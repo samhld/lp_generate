@@ -33,7 +33,7 @@ def gen_str_field(field_key_size, field_value_size, key=''):
         held_key = 'str_' + key
         held_key = held_key[:-4]
         val = _gen_string(field_key_size)
-        pair = f",{held_key}={val}"
+        pair = f',{held_key}="{val}"'
     else:
         key = 'str_' + _gen_string(field_key_size-4)
         val = _gen_string(field_value_size)
