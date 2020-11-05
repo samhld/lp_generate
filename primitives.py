@@ -24,6 +24,7 @@ def gen_tag(tag_key_size, tag_value_size, key=''):
         key = 'tag_' + _gen_string((tag_key_size-4))
         val = _gen_string(tag_value_size)
         pair = f",{key}={val}"
+
     return(pair)
 
 def gen_str_field(field_key_size, field_value_size, key=''):
@@ -36,7 +37,8 @@ def gen_str_field(field_key_size, field_value_size, key=''):
     else:
         key = 'str_' + _gen_string(field_key_size-4)
         val = _gen_string(field_value_size)
-        pair = f",{key}='{val}'"
+        pair = f',{key}="{val}"'
+
     return(pair)
 
 def gen_int_field(field_key_size, int_value_size, key=''):
