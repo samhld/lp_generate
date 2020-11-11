@@ -17,21 +17,22 @@ Disclaimer (11/3/20): Currently this only prints to `stdout`.  I will be adding 
   - Run `<your Python 3.6+ interpreter> main.py <args>`
   - Arguments are optional as they have defaults.
   - Arguments are as follows:
-    - `measurement`:        InfluxDB Measurement name to use for all Lines in a batch.
-    - `--batch_size`:       Number of Lines to write in a single batch
-    - `--num_tags`:         Number of InfluxDB Tags on each Line
-    - `--int_fields`:       Number of Fields of type `int` on each Line
-    - `--float_fields`:     Number of Fields of type `float` on each Line
-    - `--str_fields`:       Number of Fields of type `string` on each Line
-    - `--tag_key_size`:     Length of Tag keys on each Line
-    - `--tag_value_size`:   Length of Tag values on each Line
-    - `--field_key_size`:   Length of Field keys on each line
-    - `--int_value_size`:   Length of `int` Field values on each Line
-    - `--float_value_size`: Length of `float` Field values on each Line
-    - `--str_value_size`:   Length of `string` Field values on each Line
-    - `--precision`:        Timestamp precision: can be in `seconds`, `milliseconds`, `microseconds`, or `nanoseconds`
-    - `--hold_keys`:        Boolean.  If called (takes no value), Tag and Field keys will be held constant in a batch.
+    - `measurement`:          InfluxDB Measurement name to use for all Lines in a batch.
+    - `--batch_size`:         Number of Lines to write in a single batch
+    - `--num_tags`:           Number of InfluxDB Tags on each Line
+    - `--int_fields`:         Number of Fields of type `int` on each Line
+    - `--float_fields`:       Number of Fields of type `float` on each Line
+    - `--str_fields`:         Number of Fields of type `string` on each Line
+    - `--tag_key_size`:       Length of Tag keys on each Line
+    - `--tag_value_size`:     Length of Tag values on each Line
+    - `--field_key_size`:     Length of Field keys on each line
+    - `--int_value_size`:     Length of `int` Field values on each Line
+    - `--float_value_size`:   Length of `float` Field values on each Line
+    - `--str_value_size`:     Length of `string` Field values on each Line
+    - `--precision`:          Timestamp precision: can be in `seconds`, `milliseconds`, `microseconds`, or `nanoseconds`
+    - `--keep_keys_batch`:    Boolean.  If called (takes no value), Tag and Field keys will be kept constant for a single batch.
+    - `--keep_keys_session`:  Boolean.  If called (takes no value), Tag and Field keys will be kept constant for every batch.
     
 - **To do**
-  - Each batch's Tag/Field keys should not change per line.  Current plan to is instantiate keys and pass them as instances to each line instead of generating new ones for each line
+  - Enable writing multiple batches
   - Configure for writing to InfluxDB
