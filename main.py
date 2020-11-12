@@ -110,11 +110,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.keep_keys_session:
-        args.tag_keys         = [primitives._gen_string(args.tag_key_size) for i in range(args.num_tags)]
-        args.int_field_keys   = [primitives._gen_string(args.tag_key_size) for i in range(args.int_fields)]
-        args.float_field_keys = [primitives._gen_string(args.tag_key_size) for i in range(args.float_fields)]
-        args.str_field_keys   = [primitives._gen_string(args.tag_key_size) for i in range(args.str_fields)]
+        tag_keys         = [primitives._gen_string(args.tag_key_size) for i in range(args.num_tags)]
+        int_field_keys   = [primitives._gen_string(args.tag_key_size) for i in range(args.int_fields)]
+        float_field_keys = [primitives._gen_string(args.tag_key_size) for i in range(args.float_fields)]
+        str_field_keys   = [primitives._gen_string(args.tag_key_size) for i in range(args.str_fields)]
         args.keep_keys_batch  = True
+    else:
+        tag_keys         = [] 
+        int_field_keys   = []
+        float_field_keys = []
+        str_field_keys   = []
 
     batch = gen_batch(args.measurement, 
                 args.batch_size,
@@ -131,10 +136,10 @@ if __name__ == "__main__":
                 args.precision,
                 args.keep_keys_batch,
                 args.keep_keys_session,
-                args.tag_keys,
-                args.int_field_keys,
-                args.float_field_keys,
-                args.str_field_keys)
+                tag_keys,
+                int_field_keys,
+                float_field_keys,
+                str_field_keys)
 
     for line in batch:
         print(line)

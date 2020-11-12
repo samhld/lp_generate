@@ -72,16 +72,15 @@ def gen_ts(precision = 's'):
     ts = now.timestamp()
     if precision == ('s' or 'S'):
         ts = round(ts)
-        return(ts*1000000000)
+        return(ts*10**9)
     elif precision == ('ms' or 'MS'):
-        ts = round(ts*1000)
-        return(ts*1000000)
+        ts = round(ts*10**3)
+        return(ts*10**6)
     elif precision == ('us' or 'US'):
-        ts = round(ts*1000000)
-        return(ts*1000)
+        ts = round(ts*10**6)
+        return(ts*10**3)
     elif precision == ('ns' or 'NS'):
-        ts = round(ts*1000000000)
+        ts = round(ts*10**9)
         return(ts)
     else:
-        print("Warn: gen_ts() only takes `s`, `ms`, `us`, or `ns` as inputs")
-        return ts
+        raise ValueError("Warn: gen_ts() only takes `s`, `ms`, `us`, or `ns` as inputs")
