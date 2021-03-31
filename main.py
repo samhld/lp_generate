@@ -2,6 +2,7 @@ import primitives
 import sets
 import time
 import argparse
+import config
 
 def gen_line(tag_keys, int_field_keys, float_field_keys, str_field_keys, **kwargs):
 
