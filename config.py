@@ -17,4 +17,5 @@ keep_keys_batch  = False
 keep_keys_batch  = False
 regular_sample   = True
 sample_interval  = 10 if regular_sample else False
+loop             = False
 
