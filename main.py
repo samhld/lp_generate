@@ -57,14 +57,17 @@ if __name__ == "__main__":
     parser.add_argument('--float_value_size', type=int, default=4)
     parser.add_argument('--str_value_size', type=int, default=8)
     parser.add_argument('--precision', type=str, choices = ['s','S','ms','MS','us','US','ns','NS'], default='s')
-    parser.add_argument('--keep_keys_batch', action='store_true')
-    parser.add_argument('--keep_keys_session', action='store_true', help="")
-    parser.add_argument('--loop', action='store_true')
+    parser.add_argument('--keep_keys_batch', action='store_true', help="Keep Tag/Field keys constant for each line in a batch")
+    parser.add_argument('--keep_keys_session', action='store_true', help="Keep Tag/Field keys constant for each line in all batches; only relevant when `--loop` is True")
+    parser.add_argument('--keep_tags_batch', action='store_true', help="Superset of `--keep_keys_batch`; keeps Tag values constant as well")
+    parser.add_argument('--keep_tags_session', action='store_true', help="Superset of `--keep_keys_session`; keeps Tag values constant as well; only relevant when `--loop` is True")
+    parser.add_argument('--loop', action='store_true', help="If True, script runs in infinit loop; used with Telegraf `execd` input plugin")
 
     kwargs = vars(parser.parse_args())
 
     if kwargs["loop"]:
 
+        # if kwargs[""]
         if kwargs['keep_keys_session']:
             tag_keys         = [primitives._gen_string(kwargs['tag_key_size']) for i in range(kwargs['num_tags'])]
             int_field_keys   = [primitives._gen_string(kwargs['field_key_size']) for i in range(kwargs['int_fields'])]

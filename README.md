@@ -11,7 +11,7 @@ This command line application is designed to help generate a use case specific w
 * Python 3.6+
 
 ### Usage:
-Disclaimer (11/3/20): Currently this only prints to `stdout`.  I will be adding the ability to write to an InfluxDB endpoint shortly.  For now you can intercept the `stdout` data with [Telegraf](https://docs.influxdata.com/telegraf/v1.16/)'s [`exec`](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/exec) input plugin)
+Disclaimer (11/3/20): Currently this only prints to `stdout`.  I will be adding the ability to write to an InfluxDB endpoint shortly.  For now you can intercept the `stdout` data with [Telegraf](https://docs.influxdata.com/telegraf/v1.16/)'s [`exec`](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/exec) or [`execd`](https://github.com/influxdata/telegraf/tree/master/plugins/inputs/execd) input plugins)
 - **Command line**
   - `cd` into the `lp_generate` directory.
   - Run `<your Python 3.6+ interpreter> main.py <args>`
@@ -32,6 +32,9 @@ Disclaimer (11/3/20): Currently this only prints to `stdout`.  I will be adding 
     - `--precision`:          Timestamp precision: can be in `seconds`, `milliseconds`, `microseconds`, or `nanoseconds`
     - `--keep_keys_batch`:    Boolean.  If called (takes no value), Tag and Field keys will be kept constant for a single batch.
     - `--keep_keys_session`:  Boolean.  If called (takes no value), Tag and Field keys will be kept constant for every batch.
+    - `--keep_tags_batch`:    Superset of `--keep_keys_batch`; keeps Tag values constant as well
+    - `--keep_tags_session`:  Superset of `--keep_keys_session`; keeps Tag values constant as well; only relevant when `--loop` is True
+    - `--loop`:               If True, script runs in infinit loop; used with Telegraf `execd` input plugin
     
 - **To do**
   - Enable writing multiple batches
