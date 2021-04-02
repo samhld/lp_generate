@@ -14,6 +14,11 @@ def _gen_int(num):
     return(random.randint(lower_bound,upper_bound))
 
 def gen_tag_key(tag_key_size, key=''):
+    '''
+    Generates a string that will be a Tag key in a LP line.
+    The `key` argument determines if the key has already been set
+    or if this function should create it.
+    '''
     if key:
         held_key = 'tag_' + key
         held_key = held_key[:-4]
@@ -23,6 +28,9 @@ def gen_tag_key(tag_key_size, key=''):
         return key
 
 def gen_tag_value(tag_value_size, val=''):
+    '''
+    Generates a Tag value.  Behaves like `gen_tag_key`.
+    '''
     if val:
         held_val = val
         return held_val
@@ -31,7 +39,9 @@ def gen_tag_value(tag_value_size, val=''):
         return val
 
 def gen_str_field(field_key_size, field_value_size, key=''):
-    # return string Tag key-value pair
+    '''
+    Generates string key-value pair that will be a Field in a LP line.
+    '''
     if key:
         held_key = 'str_' + key
         held_key = held_key[:-4]
@@ -45,7 +55,9 @@ def gen_str_field(field_key_size, field_value_size, key=''):
     return(pair)
 
 def gen_int_field(field_key_size, int_value_size, key=''):
-    # return int Field key-value pair
+    '''
+    Generates int key-value pair that will be a Field in a LP line
+    '''
     if key:
         held_key = 'int_' + key
         held_key = held_key[:-4]
@@ -58,7 +70,9 @@ def gen_int_field(field_key_size, int_value_size, key=''):
     return(pair)
 
 def gen_float_field(field_key_size, float_value_size, key=''):
-    # return float Field key-value pair
+    '''
+    Generates float key-value pair that will be a Field in a LP line
+    '''
     if key:
         held_key = 'fl_' + key
         held_key = held_key[:-3]
@@ -71,6 +85,12 @@ def gen_float_field(field_key_size, float_value_size, key=''):
     return(pair)
 
 def gen_ts(precision = 's'):
+    '''
+    Generates a timestamp to be used at end of line of Line Protocol.
+    The precision can be set to seconds, milliseconds, microseconds, or nanoseconds.
+    Less precision is achieved with rounding the timestamp to the passed precison
+    and then adding zeros as  necessary to keep the timestamp length constant.
+    '''
     now  = datetime.datetime.now()
     ts = now.timestamp()
     if precision == ('s' or 'S'):

@@ -5,6 +5,11 @@ import argparse
 import config
 
 def gen_keys_vals(kwargs):
+    '''
+    Function used to generate keys and values directly (without calling primitive/set functions). 
+    Used for when the keys/values need to be constant for all batches/lines.
+    In those cases, keys/values must be passed from the entry point of the script. 
+    '''
     tag_keys         = [primitives._gen_string(kwargs['tag_key_size']) for i in range(kwargs['num_tags'])]
     tag_values       = [primitives._gen_string(kwargs['tag_value_size']) for i in range(kwargs['num_tags'])]
     int_field_keys   = [primitives._gen_string(kwargs['field_key_size']) for i in range(kwargs['int_fields'])]
@@ -14,6 +19,9 @@ def gen_keys_vals(kwargs):
     return tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys
 
 def gen_line(tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys, **kwargs):
+    '''
+    Generates a single line of Line Protocol out of the args passed to it.
+    '''
     tagset = sets.gen_tagset(tag_keys, tag_values, kwargs)
     fieldset = sets.gen_fieldset(int_field_keys, float_field_keys, str_field_keys, kwargs)
     timestamp = primitives.gen_ts(kwargs['precision'])
@@ -22,10 +30,10 @@ def gen_line(tag_keys, tag_values, int_field_keys, float_field_keys, str_field_k
     return line
 
 def gen_batch(kwargs, tag_keys=None, tag_values=None, int_field_keys=None, float_field_keys=None, str_field_keys=None):
-    print(f"gen_batch: {tag_keys}")
-
-    # Generate keys at runtime level if `keep_keys_session` is True. 
-    # This will keep Tag keys constant per line, reducing Series creation at database level.
+    '''
+    Generates a single batch of lines of Line Protocol.
+    This will keep Tag keys constant per line, reducing Series creation at database level.
+    '''
     if kwargs['keep_keys_session']:
         tag_keys         = tag_keys
         int_field_keys   = int_field_keys
@@ -49,6 +57,7 @@ def gen_batch(kwargs, tag_keys=None, tag_values=None, int_field_keys=None, float
 
     return batch
 
+# Expected entry point to script
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a batch of Line Protocol points of a specified shape")
     parser.add_argument('measurement', type=str, default='cpu')
