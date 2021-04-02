@@ -13,19 +13,22 @@ def _gen_int(num):
     upper_bound = 10 ** num - 1
     return(random.randint(lower_bound,upper_bound))
 
-def gen_tag(tag_key_size, tag_value_size, key=''):
-    # return string Tag key-value pair
+def gen_tag_key(tag_key_size, key=''):
     if key:
         held_key = 'tag_' + key
         held_key = held_key[:-4]
-        val = _gen_string(tag_value_size)
-        pair = f",{held_key}={val}"
+        return held_key
     else:
         key = 'tag_' + _gen_string((tag_key_size-4))
-        val = _gen_string(tag_value_size)
-        pair = f",{key}={val}"
+        return key
 
-    return(pair)
+def gen_tag_value(tag_value_size, val=''):
+    if val:
+        held_val = val
+        return held_val
+    else:
+        val = _gen_string((tag_value_size))
+        return val
 
 def gen_str_field(field_key_size, field_value_size, key=''):
     # return string Tag key-value pair
