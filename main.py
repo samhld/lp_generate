@@ -4,17 +4,26 @@ import time
 import argparse
 import config
 
-def gen_line(tag_keys, int_field_keys, float_field_keys, str_field_keys, **kwargs):
+def gen_keys_vals(kwargs):
+    tag_keys         = [primitives._gen_string(kwargs['tag_key_size']) for i in range(kwargs['num_tags'])]
+    tag_values       = [primitives._gen_string(kwargs['tag_value_size']) for i in range(kwargs['num_tags'])]
+    int_field_keys   = [primitives._gen_string(kwargs['field_key_size']) for i in range(kwargs['int_fields'])]
+    float_field_keys = [primitives._gen_string(kwargs['field_key_size']) for i in range(kwargs['float_fields'])]
+    str_field_keys   = [primitives._gen_string(kwargs['field_key_size']) for i in range(kwargs['str_fields'])]
 
-    tagset = sets.gen_tagset(tag_keys, **kwargs)
-    fieldset = sets.gen_fieldset(int_field_keys, float_field_keys, str_field_keys, **kwargs)
+    return tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys
+
+def gen_line(tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys, **kwargs):
+    tagset = sets.gen_tagset(tag_keys, tag_values, kwargs)
+    fieldset = sets.gen_fieldset(int_field_keys, float_field_keys, str_field_keys, kwargs)
     timestamp = primitives.gen_ts(kwargs['precision'])
-    line = f"{kwargs['measurement']},{tagset}{fieldset}{timestamp}"
+    line = f"{kwargs['measurement']},{tagset} {fieldset}{timestamp}"
 
-    return(line)
+    return line
 
-def gen_batch(kwargs, tag_keys=None, int_field_keys=None, float_field_keys=None, str_field_keys=None):
-    
+def gen_batch(kwargs, tag_keys=None, tag_values=None, int_field_keys=None, float_field_keys=None, str_field_keys=None):
+    print(f"gen_batch: {tag_keys}")
+
     # Generate keys at runtime level if `keep_keys_session` is True. 
     # This will keep Tag keys constant per line, reducing Series creation at database level.
     if kwargs['keep_keys_session']:
@@ -25,10 +34,8 @@ def gen_batch(kwargs, tag_keys=None, int_field_keys=None, float_field_keys=None,
     # Generate keys at batch level if `keep_keys_batch` is True. 
     # This will keep Tag keys constant per line, reducing Series creation at database level.
     elif kwargs['keep_keys_batch']:
-        tag_keys         = [primitives._gen_string(kwargs['tag_key_size']) for i in range(kwargs['num_tags'])]
-        int_field_keys   = [primitives._gen_string(kwargs['tag_key_size']) for i in range(kwargs['int_fields'])]
-        float_field_keys = [primitives._gen_string(kwargs['tag_key_size']) for i in range(kwargs['float_fields'])]
-        str_field_keys   = [primitives._gen_string(kwargs['tag_key_size']) for i in range(kwargs['str_fields'])]
+        tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys = gen_keys_vals(kwargs)
+
     else:
         tag_keys         = []
         int_field_keys   = []
@@ -37,10 +44,10 @@ def gen_batch(kwargs, tag_keys=None, int_field_keys=None, float_field_keys=None,
         
     batch = []
     for i in range(kwargs['batch_size']):
-        line = gen_line(tag_keys, int_field_keys, float_field_keys, str_field_keys, **kwargs)
+        line = gen_line(tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys, **kwargs)
         batch.append(line)
 
-    return(batch)
+    return batch
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a batch of Line Protocol points of a specified shape")
@@ -67,28 +74,60 @@ if __name__ == "__main__":
 
     if kwargs["loop"]:
 
-        # if kwargs[""]
-        if kwargs['keep_keys_session']:
-            tag_keys         = [primitives._gen_string(kwargs['tag_key_size']) for i in range(kwargs['num_tags'])]
-            int_field_keys   = [primitives._gen_string(kwargs['field_key_size']) for i in range(kwargs['int_fields'])]
-            float_field_keys = [primitives._gen_string(kwargs['field_key_size']) for i in range(kwargs['float_fields'])]
-            str_field_keys   = [primitives._gen_string(kwargs['field_key_size']) for i in range(kwargs['str_fields'])]
-            kwargs['keep_keys_batch']  = True
+        if kwargs["keep_tags_session"]:
 
+            # Instantiate all keys/values before loops starts so they remain constant
+            tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys = gen_keys_vals(kwargs)
+            kwargs["keep_keys_session"] = True
             while True:
-                print(kwargs["keep_keys_batch"])
+
                 batch = gen_batch(kwargs,
-                                  tag_keys=tag_keys, 
-                                  int_field_keys=int_field_keys, 
-                                  float_field_keys=float_field_keys, 
-                                  str_field_keys=str_field_keys)
-                
+                                    tag_keys=tag_keys,
+                                    tag_values=tag_values, 
+                                    int_field_keys=int_field_keys, 
+                                    float_field_keys=float_field_keys, 
+                                    str_field_keys=str_field_keys)
                 for line in batch:
                     print(line)
 
-                time.sleep(config.regular_sample)
+                time.sleep(config.sample_interval)
+
+        elif kwargs["keep_tags_batch"]:
+            while True:
+                print(kwargs)
+                # Instantiate keys/values in loop so they change different each iteration
+                tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys = gen_keys_vals(kwargs)
+                kwargs["keep_keys_batch"] = True
+                batch = gen_batch(kwargs, tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys)
+
+                for line in batch:
+                    print(line)
+
+                time.sleep(config.sample_interval)
+
+        elif kwargs['keep_keys_session']:
+            tag_keys, _, int_field_keys, float_field_keys, str_field_keys = gen_keys_vals(kwargs)
+            kwargs['keep_keys_batch'] = True
+            while True:
+                batch = gen_batch(kwargs,
+                                tag_keys=tag_keys,
+                                int_field_keys=int_field_keys, 
+                                float_field_keys=float_field_keys, 
+                                str_field_keys=str_field_keys)
+                    
+                for line in batch:
+                    print(line)
+
+                time.sleep(config.sample_interval)
         else:
             batch = gen_batch(kwargs)
+            while True:
+                for line in batch:
+                    print(line)
 
-            for line in batch:
-                print(line)
+                time.sleep(config.sample_interval)
+    else:
+        batch = gen_batch(kwargs)
+
+        for line in batch:
+            print(line)
