@@ -120,8 +120,8 @@ if __name__ == "__main__":
 
                 time.sleep(config.sample_interval)
         else:
-            batch = gen_batch(kwargs)
             while True:
+                batch = gen_batch(kwargs)
                 for line in batch:
                     print(line)
 
