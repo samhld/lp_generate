@@ -35,7 +35,6 @@ def gen_batch(kwargs, distinct_sets=[], tag_keys=None, tag_values=None, int_fiel
     This will keep Tag keys constant per line, reducing Series creation at database level.
     '''
     if distinct_sets:
-        print(f"distinct_sets: {distinct_sets}")
         batch = []
         for tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys in distinct_sets:
             line = gen_line(tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys, **kwargs)

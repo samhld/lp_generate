@@ -15,9 +15,9 @@ str_value_size    = 8
 precision         = 's'
 keep_keys_batch   = False
 keep_keys_batch   = False
-keep_tags_batch   = True
+keep_tags_batch   = False
 keep_keys_session = True
 regular_sample    = True
-sample_interval   = 10 if regular_sample else False
+sample_interval   = 5 if regular_sample else False
 loop              = False
 
