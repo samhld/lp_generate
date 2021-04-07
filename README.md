@@ -37,5 +37,4 @@ Disclaimer (11/3/20): Currently this only prints to `stdout`.  I will be adding 
     - `--loop`:               If True, script runs in infinit loop; used with Telegraf `execd` input plugin
     
 - **To do**
-  - Enable writing multiple batches
   - Configure for writing to InfluxDB
