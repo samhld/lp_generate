@@ -111,8 +111,6 @@ if __name__ == "__main__":
 
                     time.sleep(config.sample_interval)
             else: # not keep_keys_batch --> keys will be different in the batch but repeated across batches
-                distincts = {}
-                distincts["tag_keys"], distincts["tag_values"], distincts["int_field_keys"], distincts["float_field_keys"], distincts["str_field_keys"] = [], [], [], [], []
                 distinct_sets = [gen_keys_vals(kwargs) for i in range(kwargs["batch_size"])]
                 batch = gen_batch(kwargs, distinct_sets=distinct_sets)
 
