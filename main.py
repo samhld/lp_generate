@@ -29,12 +29,20 @@ def gen_line(tag_keys, tag_values, int_field_keys, float_field_keys, str_field_k
 
     return line
 
-def gen_batch(kwargs, tag_keys=None, tag_values=None, int_field_keys=None, float_field_keys=None, str_field_keys=None):
+def gen_batch(kwargs, distinct_sets=[], tag_keys=None, tag_values=None, int_field_keys=None, float_field_keys=None, str_field_keys=None):
     '''
     Generates a single batch of lines of Line Protocol.
     This will keep Tag keys constant per line, reducing Series creation at database level.
     '''
-    if kwargs['keep_keys_session']:
+    if distinct_sets:
+        print(f"distinct_sets: {distinct_sets}")
+        batch = []
+        for tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys in distinct_sets:
+            line = gen_line(tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys, **kwargs)
+            batch.append(line)
+        return batch
+
+    elif kwargs['keep_keys_session']:
         tag_keys         = tag_keys
         int_field_keys   = int_field_keys
         float_field_keys = float_field_keys
@@ -49,7 +57,7 @@ def gen_batch(kwargs, tag_keys=None, tag_values=None, int_field_keys=None, float
         int_field_keys   = []
         float_field_keys = []
         str_field_keys   = []
-        
+
     batch = []
     for i in range(kwargs['batch_size']):
         line = gen_line(tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys, **kwargs)
@@ -88,18 +96,32 @@ if __name__ == "__main__":
             # Instantiate all keys/values before loops starts so they remain constant
             tag_keys, tag_values, int_field_keys, float_field_keys, str_field_keys = gen_keys_vals(kwargs)
             kwargs["keep_keys_session"] = True
-            while True:
 
-                batch = gen_batch(kwargs,
-                                    tag_keys=tag_keys,
-                                    tag_values=tag_values, 
-                                    int_field_keys=int_field_keys, 
-                                    float_field_keys=float_field_keys, 
-                                    str_field_keys=str_field_keys)
-                for line in batch:
-                    print(line)
+            if kwargs["keep_keys_batch"]:
+                while True:
 
-                time.sleep(config.sample_interval)
+                    batch = gen_batch(kwargs,
+                                        tag_keys=tag_keys,
+                                        tag_values=tag_values, 
+                                        int_field_keys=int_field_keys, 
+                                        float_field_keys=float_field_keys, 
+                                        str_field_keys=str_field_keys)
+                    for line in batch:
+                        print(line)
+
+                    time.sleep(config.sample_interval)
+            else: # not keep_keys_batch --> keys will be different in the batch but repeated across batches
+                distincts = {}
+                distincts["tag_keys"], distincts["tag_values"], distincts["int_field_keys"], distincts["float_field_keys"], distincts["str_field_keys"] = [], [], [], [], []
+                distinct_sets = [gen_keys_vals(kwargs) for i in range(kwargs["batch_size"])]
+                batch = gen_batch(kwargs, distinct_sets=distinct_sets)
+
+                while True:
+            
+                    for line in batch:
+                        print(line)
+
+                    time.sleep(config.sample_interval)
 
         elif kwargs["keep_tags_batch"]:
             while True:
